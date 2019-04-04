@@ -22,10 +22,10 @@
           </div>
         </div>
       </nav>
-      
+
       <!-- Login Screen -->
       <div class="flex-column login" ng-show="showLogin">
-        
+
         <!-- Login Header -->
         <div class="login-header">
           <div class="logo" ng-style="{'background-image': 'url({{icon}})'}"></div>
@@ -40,12 +40,12 @@
               <label for="url">Jira URL</label>
               <div class="InputAddOn" ng-class="{'addon-selected': focused, 'has-error': loginForm.url.$invalid && (loginForm.$submitted || loginForm.url.$touched) }">
                 <span ng-click="ssl = !ssl" class="InputAddOn-item" ng-bind="ssl ? 'https://' : 'http://'"></span>
-                <input 
+                <input
                   id="login-url"
                   class="InputAddOn-field"
                   type="text"
                   ng-model="loginData.url"
-                  name="url" 
+                  name="url"
                   ng-class="{'has-error': loginForm.url.$invalid && (loginForm.$submitted || loginForm.url.$touched) }"
                   ng-focus="focused = true"
                   ng-blur="focused = false"
@@ -56,17 +56,17 @@
             </li>
             <li>
               <label for="username" >Username</label>
-              <input 
+              <input
                 type="text"
                 ng-model="loginData.user"
-                name="username" 
+                name="username"
                 ng-class="{'has-error': loginForm.username.$invalid && (loginForm.$submitted || loginForm.username.$touched) }"
                 required>
               </input>
             </li>
             <li>
               <label for="password">Password</label>
-              <input 
+              <input
                 type="password"
                 ng-model="loginData.password"
                 name="password"
@@ -81,7 +81,7 @@
           </ul>
         </form>
       </div>
-      
+
       <!-- Settings Form -->
       <div class="flex-column"  ng-show="!showLogin">
         <form id="settings-form">
@@ -89,7 +89,7 @@
         <!-- General User Settings -->
         <section id="settings">
           <div class="section-title">
-            <h3>Settings</h3>            
+            <h3>Settings</h3>
           </div>
             <hr>
             <ul class="flex-outer">
@@ -107,6 +107,10 @@
                 <input type="text" ng-model="options.log_time_increments"/>
               </li>
               <li>
+                <input id="logProgress" name="logProgress" type="checkbox" ng-model="options.logProgress"/>
+                <label for="logProgress">Allow logging progress</label>
+              </li>
+              <li>
                 <input id="advancedSearch" name="advancedSearch" type="checkbox" ng-model="options.advancedSearch"/>
                 <label for="advancedSearch">Advanced Search (JQL)</label>
               </li>
@@ -119,10 +123,10 @@
                 <p class="help" ng-bind="backgroundCacheIntervalConversion"></p>
                 </label>
                 <input type="number" min="10" step="5" ng-model="options.backgroundCacheInterval"/>
-                <button 
-                  type="button" 
-                  class="inline-button fade" 
-                  ng-click="checkDaemonStatus()" 
+                <button
+                  type="button"
+                  class="inline-button fade"
+                  ng-click="checkDaemonStatus()"
                   ng-disabled="inProgress.daemon"
                   ng-show="daemonRunning"
                   ng-class="{ 'disabled': inProgress.daemon, 'success': daemonStatus, 'failed': daemonStatus === false }">
@@ -140,27 +144,27 @@
               </li>
             </ul>
           </section>
-          
+
           <!-- Bookmarks -->
           <section id="Bookmarks">
             <div class="section-title">
-              <h3>Bookmarks</h3>            
+              <h3>Bookmarks</h3>
             </div>
             <hr>
             <p>
-              <b>Bookmarks</b> are saved <a href="https://confluence.atlassian.com/jirasoftwarecloud/advanced-searching-764478330.html" target="_blank">JQL</a> queries that display as soon as you type <code>jira</code> into Alfred. You can edit the default queries or create custom ones to better fit your needs. 
+              <b>Bookmarks</b> are saved <a href="https://confluence.atlassian.com/jirasoftwarecloud/advanced-searching-764478330.html" target="_blank">JQL</a> queries that display as soon as you type <code>jira</code> into Alfred. You can edit the default queries or create custom ones to better fit your needs.
             </p>
             <div class="bookmark-form" id="bookmark-form">
               <ul class="flex-outer">
                 <li>
                   <label for="bookmarkName">Name</label>
                   <input type="text" name="bookmarkName" ng-model="selectedBookmark.name">
-                  <img 
+                  <img
                     ng-src="{{ bookmarkIcon(selectedIcon) }}"
-                    class="bookmark-icon bookmark-icon-button" 
+                    class="bookmark-icon bookmark-icon-button"
                     ng-click="getBookmarkIcon(selectedBookmarkIndex)"/>
                     <div class="table-column remove" ng-show="selectedIcon" ng-click="selectedIcon = null">
-                      <i class="fa fa-times fa-lg"></i>                    
+                      <i class="fa fa-times fa-lg"></i>
                     </div>
                 </li>
                 <li>
@@ -176,10 +180,10 @@
                   <div class="flex-outer sort-wrapper">
                     <ul class="flex-inner sort-list" ng-repeat="(pos, val) in selectedBookmark.sort">
                       <li class="sort-selection">
-                        <select 
-                          name="sort-{{ pos }}" 
-                          id="sort-{{ pos }}" 
-                          ng-model="val.name" 
+                        <select
+                          name="sort-{{ pos }}"
+                          id="sort-{{ pos }}"
+                          ng-model="val.name"
                           ng-options="val for val in sortFields(val.name)">
                         </select>
                       </li>
@@ -216,15 +220,15 @@
                 </li>
                 <li>
                   <button
-                    type="button" 
-                    ng-click="addBookmark(selectedBookmark)" 
+                    type="button"
+                    ng-click="addBookmark(selectedBookmark)"
                     ng-disabled="!(selectedBookmark.name && selectedBookmark.query)"
                     ng-class="(selectedBookmark.name && selectedBookmark.query) ? '' : 'disabled'">
                     {{ bookmarkInEdit ? 'OK' : 'Add' }}
                   </button>
                   <button
-                    type="button" 
-                    ng-click="testBookmark(selectedBookmark)" 
+                    type="button"
+                    ng-click="testBookmark(selectedBookmark)"
                     ng-disabled="!selectedBookmark.query || inProgress.testConfig"
                     ng-class="{ 'disabled': !selectedBookmark.query || inProgress.testConfig, 'success': testSuccessful }"
                     >
@@ -256,7 +260,7 @@
               </div>
             </div>
           </section>
-          
+
           <!-- Enabled Menu Items -->
           <section id="menu-items">
             <div class="section-title">
@@ -274,7 +278,7 @@
               </li>
             </ul>
           </section>
-          
+
           <!-- Enabled Projects -->
           <section id="projects">
             <div class="section-title">
@@ -291,9 +295,9 @@
                   </label>
                 </div>
               </li>
-            </ul>  
+            </ul>
           </section>
-          
+
           <!-- Enabled Statuses -->
           <section id="statuses">
             <div class="section-title">
@@ -313,11 +317,11 @@
               </li>
             </ul>
           </section>
-          
+
           <!-- Optional -->
           <section id="optional">
           <div class="section-title">
-            <h3>Optional</h3>  
+            <h3>Optional</h3>
           </div>
           <hr>
           <ul class="flex-outer">
